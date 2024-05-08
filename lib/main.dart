@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:note_app_online/pages/todo_page.dart';
+import 'package:note_app_online/pages/splash_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,10 +12,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Todo App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: TodoListScreen(),
+      theme: ThemeData(),
+      home: SplashScreen(),
       // home: TodoListScreen(),
     );
   }

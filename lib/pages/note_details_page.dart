@@ -7,7 +7,7 @@ import '../model/note_model.dart';
 class TodoDetailScreen extends StatefulWidget {
   final Todo? todo;
 
-  TodoDetailScreen({Key? key, this.todo}) : super(key: key);
+  const TodoDetailScreen({super.key, this.todo});
 
   @override
   _TodoDetailScreenState createState() => _TodoDetailScreenState();
@@ -148,7 +148,7 @@ class _TodoDetailScreenState extends State<TodoDetailScreen> {
                     DateFormat('yyyy-MM-dd').format(_selectedDate),
                     style: const TextStyle(
                       fontSize: 16,
-                      color: Colors.blue,
+                      color: Colors.purpleAccent,
                       decoration: TextDecoration.underline,
                     ),
                   ),
