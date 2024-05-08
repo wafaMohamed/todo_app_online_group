@@ -31,7 +31,6 @@ class _TodoDetailScreenState extends State<TodoDetailScreen> {
     final description = _descriptionController.text;
 
     if (name.isNotEmpty) {
-      // Check if name is not empty
       final todo = Todo(
         id: widget.todo?.id,
         name: name,
@@ -41,7 +40,7 @@ class _TodoDetailScreenState extends State<TodoDetailScreen> {
       if (widget.todo == null) {
         await DatabaseHelper.instance.insertTodo(todo);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('Todo added'),
             duration: Duration(seconds: 2),
           ),
@@ -49,7 +48,7 @@ class _TodoDetailScreenState extends State<TodoDetailScreen> {
       } else {
         await DatabaseHelper.instance.updateTodo(todo);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('Todo updated'),
             duration: Duration(seconds: 2),
           ),
@@ -58,7 +57,7 @@ class _TodoDetailScreenState extends State<TodoDetailScreen> {
       Navigator.pop(context, true);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Title cannot be empty'),
           duration: Duration(seconds: 2),
         ),
@@ -89,30 +88,84 @@ class _TodoDetailScreenState extends State<TodoDetailScreen> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const Text(
+              'Name',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
+            ),
+            const SizedBox(height: 8),
             TextField(
               controller: _nameController,
-              decoration: InputDecoration(labelText: 'Name'),
-            ),
-            SizedBox(height: 12),
-            TextField(
-              controller: _descriptionController,
-              decoration: InputDecoration(labelText: 'Description'),
-            ),
-            SizedBox(height: 12),
-            ListTile(
-              title: Text('Date'),
-              subtitle: Text(
-                DateFormat('yyyy-MM-dd').format(_selectedDate),
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'Enter todo name',
               ),
-              trailing: Icon(Icons.calendar_today),
-              onTap: () => _selectDate(context),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 16),
+            const Text(
+              'Description',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: Colors.grey),
+                ),
+                child: TextField(
+                  controller: _descriptionController,
+                  maxLines: null, // Allows multiline input
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'Enter todo description',
+                    contentPadding: EdgeInsets.all(8),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            Row(
+              children: [
+                const Text(
+                  'Date',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                GestureDetector(
+                  onTap: () => _selectDate(context),
+                  child: Text(
+                    DateFormat('yyyy-MM-dd').format(_selectedDate),
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.blue,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _saveTodo,
-              child: Text(widget.todo == null ? 'Add Todo' : 'Update Todo'),
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                child: Text(
+                  widget.todo == null ? 'Add Todo' : 'Update Todo',
+                  style: const TextStyle(fontSize: 16),
+                ),
+              ),
             ),
           ],
         ),
