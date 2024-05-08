@@ -29,18 +29,41 @@ class _TodoDetailScreenState extends State<TodoDetailScreen> {
   void _saveTodo() async {
     final name = _nameController.text;
     final description = _descriptionController.text;
-    final todo = Todo(
-      id: widget.todo?.id,
-      name: name,
-      description: description,
-      dateTime: _selectedDate,
-    );
-    if (widget.todo == null) {
-      await DatabaseHelper.instance.insertTodo(todo);
+
+    if (name.isNotEmpty) {
+      // Check if name is not empty
+      final todo = Todo(
+        id: widget.todo?.id,
+        name: name,
+        description: description,
+        dateTime: _selectedDate,
+      );
+      if (widget.todo == null) {
+        await DatabaseHelper.instance.insertTodo(todo);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Todo added'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      } else {
+        await DatabaseHelper.instance.updateTodo(todo);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Todo updated'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+      Navigator.pop(context, true);
     } else {
-      await DatabaseHelper.instance.updateTodo(todo);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Title cannot be empty'),
+          duration: Duration(seconds: 2),
+        ),
+      );
     }
-    Navigator.pop(context, true);
   }
 
   Future<void> _selectDate(BuildContext context) async {
